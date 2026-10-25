@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VTU PROVISIONAL RESULTS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #616669;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 10px;
+            min-height: 100vh;
+        }
+
+        .outer-wrapper {
+            width: 100%;
+            max-width: 580px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.45);
+            border: 1px solid #777;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top Header Bar */
+        .header-bar {
+            background-color: #4a4d50;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 2px solid #383a3d;
+        }
+
+        .header-left, .header-right {
+            font-size: 11.5px;
+            font-weight: bold;
+            line-height: 1.35;
+        }
+
+        .header-left {
+            text-align: left;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 2px solid #ffffff;
+            object-fit: cover;
+            box-shadow: 0 0 4px rgba(0,0,0,0.3);
+        }
+
+        /* Title Banners */
+        .title-banner-orange {
+            background-color: #f7cbaf;
+            text-align: center;
+            padding: 7px 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #111111;
+            border-bottom: 1px solid #e2b093;
+            line-height: 1.35;
+        }
+
+        .title-banner-green {
+            background-color: #a3e4b7;
+            text-align: center;
+            padding: 6px 12px;
+            font-size: 10.5px;
+            font-weight: bold;
+            color: #0d381c;
+            border-bottom: 1px solid #84c99b;
+            line-height: 1.35;
+        }
+
+        /* Login Form Section */
+        .login-section {
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: #ffffff;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 12px;
+            border: 1px solid #767676;
+            outline: none;
+            color: #333;
+            background-color: #ffffff;
+        }
+
+        .captcha-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .captcha-img {
+            width: 135px;
+            height: 38px;
+            background: #f0f0f0;
+            border: 1px dashed #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #222;
+            user-select: none;
+            background-image: radial-gradient(#bbb 15%, transparent 16%), radial-gradient(#bbb 15%, transparent 16%);
+            background-size: 8px 8px;
+        }
+
+        .refresh-btn {
+            cursor: pointer;
+            font-size: 18px;
+            color: #0077b6;
+            border: none;
+            background: none;
+            font-weight: bold;
+        }
+
+        .btn-submit {
+            background-color: #8ce09f;
+            color: #111;
+            border: 1px solid #57be6d;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 12.5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #7bd990;
+        }
+
+        .btn-cancel {
+            background-color: #f79997;
+            color: #111;
+            border: 1px solid #e06c6a;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 12.5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-cancel:hover {
+            background-color: #f58886;
+        }
+
+        /* Results Section & Watermark */
+        .results-container {
+            position: relative;
+            padding: 14px 16px;
+            background-color: #ffffff;
+        }
+
+        .results-container::before {
+            content: "";
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 320px;
+            background-image: url('vtu actual logo.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Student Details Table */
+        .student-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+
+        .student-info-table td {
+            border: 1px solid #999999;
+            padding: 6px 10px;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .student-info-table .label {
+            font-weight: bold;
+            width: 58%;
+        }
+
+        .student-info-table .val {
+            font-weight: bold;
+            width: 42%;
+        }
+
+        /* Semester Title */
+        .semester-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            margin: 10px 0;
+            color: #000;
+        }
+
+        /* Marks Table */
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 9.5px;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+
+        .marks-table th,
+        .marks-table td {
+            border: 1px solid #999999;
+            padding: 5px 4px;
+            color: #000;
+        }
+
+        .marks-table th {
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.95);
+            line-height: 1.25;
+        }
+
+        .marks-table td.subject-name {
+            text-align: left;
+            padding-left: 6px;
+            line-height: 1.25;
+        }
+
+        /* Nomenclature Section */
+        .nomenclature-header {
+            background-color: #a3e4b7;
+            text-align: center;
+            padding: 5px;
+            font-size: 10.5px;
+            font-weight: bold;
+            color: #0d381c;
+            border: 1px solid #84c99b;
+            margin-top: 16px;
+            line-height: 1.35;
+        }
+
+        .nomenclature-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: -1px;
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .nomenclature-table td {
+            border: 1px solid #999;
+            padding: 5px 3px;
+            color: #000;
+        }
+
+        /* Notes Section */
+        .notes-section {
+            font-size: 9px;
+            font-weight: bold;
+            margin-top: 10px;
+            line-height: 1.4;
+            color: #000;
+        }
+
+        .notes-section p {
+            margin-bottom: 2px;
+        }
+
+        /* Registrar Signature Block */
+        .signature-section {
+            text-align: right;
+            margin-top: 16px;
+            margin-bottom: 12px;
+            padding-right: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.35;
+            color: #000;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 14px;
+        }
+
+        .btn-back {
+            background-color: #e85d58;
+            color: #000000;
+            border: 1px solid #d44c47;
+            padding: 7px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-back:hover {
+            background-color: #df4f4a;
+        }
+
+        .btn-print {
+            background-color: #80ded9;
+            color: #000000;
+            border: 1px solid #66c9c4;
+            padding: 7px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-print:hover {
+            background-color: #6ed0cb;
+        }
+
+        /* Footer */
+        .footer-bar {
+            background-color: #4a4d50;
+            color: #ffffff;
+            font-size: 8.5px;
+            text-align: center;
+            padding: 6px 10px;
+            line-height: 1.35;
+            border-top: 1px solid #383a3d;
+        }
+
+        /* Responsive Table Container */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 520px) {
+            body {
+                padding: 10px 4px;
+            }
+
+            .header-bar {
+                padding: 6px 8px;
+                gap: 4px;
+            }
+
+            .header-left, .header-right {
+                font-size: 9.5px;
+                line-height: 1.25;
+            }
+
+            .header-logo {
+                width: 44px;
+                height: 44px;
+                flex-shrink: 0;
+            }
+
+            .title-banner-orange {
+                font-size: 11.5px;
+                padding: 6px 6px;
+            }
+
+            .title-banner-green {
+                font-size: 9.5px;
+                padding: 5px 8px;
+            }
+
+            .login-section {
+                padding: 16px 14px;
+            }
+
+            .results-container {
+                padding: 10px 8px;
+            }
+
+            .student-info-table td {
+                padding: 5px 6px;
+                font-size: 10px;
+            }
+
+            .marks-table th, 
+            .marks-table td {
+                padding: 4px 2px;
+                font-size: 8.5px;
+            }
+
+            .nomenclature-table td {
+                padding: 4px 2px;
+                font-size: 8px;
+                white-space: nowrap;
+            }
+
+            .captcha-box {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="outer-wrapper">
+
+        <!-- Top Header Bar -->
+        <div class="header-bar">
+            <div class="header-left">
+                ವಿಶ್ವೇಶ್ವರಯ್ಯ ತಾಂತ್ರಿಕ ವಿಶ್ವವಿದ್ಯಾಲಯ<br>
+                ಬೆಳಗಾವಿ.
+            </div>
+            <div class="header-logo-container">
+                <img src="vtu actual logo.jpg" alt="VTU Logo" class="header-logo" />
+            </div>
+            <div class="header-right">
+                VISVESVARAYA TECHNOLOGICAL UNIVERSITY<br>
+                BELAGAVI.
+            </div>
+        </div>
+
+        <!-- Orange/Peach Title Banner -->
+        <div class="title-banner-orange">
+            ವಿ.ತಾ.ವಿ ಸಾಮಯಿಕ ಫಲಿತಾಂಶ.<br>
+            VTU PROVISIONAL RESULT.
+        </div>
+
+        <!-- Green Subtitle Banner -->
+        <div class="title-banner-green">
+            ವಿ.ತಾ.ವಿ ಪದವಿ / ಸ್ನಾತಕೋತ್ತರ ಪದವಿ ಪರೀಕ್ಷೆಯ ಸಾಮಯಿಕ ಫಲಿತಾಂಶ ಡಿಸೆಂಬರ್-೨೦೨೫ / ಜನವರಿ-೨೦೨೬.<br>
+            VTU PROVISIONAL RESULTS OF UG / PG December-2025 / January-2026 EXAMINATION.
+        </div>
+
+        <!-- LOGIN VIEW (Opens first when file is opened) -->
+        <div id="loginView" class="login-section">
+            <form onsubmit="showResults(event)">
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <input type="text" id="usnInput" placeholder="ENTER USN" required />
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <input type="text" placeholder="Enter Captcha Code" required />
+                </div>
+                <div class="captcha-box" style="margin-bottom: 12px;">
+                    <div class="captcha-img">NYJBK7</div>
+                    <button type="button" class="refresh-btn">&#x21bb;</button>
+                </div>
+                <button type="submit" class="btn-submit" style="margin-bottom: 8px;">ಸಲ್ಲಿಸಿ / SUBMIT</button>
+                <button type="reset" class="btn-cancel">ರದ್ದುಪಡಿಸಿ / CANCEL</button>
+            </form>
+        </div>
+
+        <!-- RESULT VIEW (Appears upon submitting USN & Captcha) -->
+        <div id="resultView" class="results-container" style="display: none;">
+            <div class="content-layer">
+
+                <!-- Student Details Table -->
+                <table class="student-info-table">
+                    <tr>
+                        <td class="label">University Seat Number</td>
+                        <td class="val">: <span id="displayUsn">4MU24CS086</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Student Name</td>
+                        <td class="val">: JEEVITHA</td>
+                    </tr>
+                </table>
+
+                <!-- Semester Header -->
+                <div class="semester-title">Semester : 3</div>
+
+                <!-- Marks Table -->
+                <div class="table-responsive">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Subject<br>Code</th>
+                            <th>Subject Name</th>
+                            <th>Internal<br>Marks</th>
+                            <th>External<br>Marks</th>
+                            <th>Total</th>
+                            <th>Result</th>
+                            <th>Announced<br>/ Updated<br>on</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BCS301</td>
+                            <td class="subject-name">MATHEMATICS FOR COMPUTER SCIENCE</td>
+                            <td>35</td>
+                            <td>19</td>
+                            <td>54</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BCS302</td>
+                            <td class="subject-name">DIGITAL DESIGN &amp; COMPUTER ORGANIZATION</td>
+                            <td>36</td>
+                            <td>19</td>
+                            <td>55</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BCS303</td>
+                            <td class="subject-name">OPERATING SYSTEMS</td>
+                            <td>33</td>
+                            <td>18</td>
+                            <td>51</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BCS304</td>
+                            <td class="subject-name">DATA STRUCTURES AND APPLICATIONS</td>
+                            <td>32</td>
+                            <td>36</td>
+                            <td>68</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BCSL305</td>
+                            <td class="subject-name">DATA STRUCTURES LAB</td>
+                            <td>31</td>
+                            <td>22</td>
+                            <td>53</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BSCK307</td>
+                            <td class="subject-name">SOCIAL CONNECT AND RESPONSIBILITY</td>
+                            <td>92</td>
+                            <td>0</td>
+                            <td>92</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BNSK359</td>
+                            <td class="subject-name">NATIONAL SERVICE SCHEME</td>
+                            <td>91</td>
+                            <td>0</td>
+                            <td>91</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BCS306A</td>
+                            <td class="subject-name">OBJECT ORIENTED PROGRAMMING WITH JAVA</td>
+                            <td>33</td>
+                            <td>30</td>
+                            <td>63</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                        <tr>
+                            <td>BCS358C</td>
+                            <td class="subject-name">PROJECT MANAGEMENT WITH GIT</td>
+                            <td>41</td>
+                            <td>23</td>
+                            <td>64</td>
+                            <td>P</td>
+                            <td>2026-03-03</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- Nomenclature Header -->
+                <div class="nomenclature-header">
+                    ನಾಮಕರಣ / ಸಂಕ್ಷೇಪಣಗಳು<br>
+                    Nomenclature / Abbreviations
+                </div>
+
+                <!-- Nomenclature Table -->
+                <div class="table-responsive">
+                <table class="nomenclature-table">
+                    <tr>
+                        <td>P -&gt; PASS</td>
+                        <td>F -&gt; FAIL</td>
+                        <td>A -&gt; ABSENT</td>
+                        <td>W -&gt; WITHHELD</td>
+                        <td>X, NE -&gt; NOT ELIGIBLE</td>
+                    </tr>
+                </table>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="notes-section">
+                    <p>Note :</p>
+                    <p>1) Some subject results are pending due to CIE/SEE mark issues or technical reasons and will be updated shortly.</p>
+                    <p>2) Withheld results will be announced later.</p>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="signature-section">
+                    <div>ಸಹಿ/-</div>
+                    <div>Sdl/-</div>
+                    <div style="margin-top: 10px;">ಕುಲಸಚಿವರು (ಮೌಲ್ಯಮಾಪನ)</div>
+                    <div>REGISTRAR (EVALUATION)</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="button" class="btn-back" onclick="showLogin()">ಹಿಂಪಡೆ / BACK</button>
+                    <button type="button" class="btn-print" onclick="window.print()">ಮುದ್ರಣ / PRINT</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Footer Bar -->
+        <div class="footer-bar">
+            © ೨೦೨೬ ವಿನ್ಯಾಸ ಮತ್ತು ಅಭಿವೃದ್ಧಿಪಡಿಸಿದವರು ಯೋಜನಾ ನಿರ್ವಹಣೆ ವಿಭಾಗ (ಪಿ. ಎಮ್. ಸಿ), ವಿ.ತಾ.ವಿ, ಬೆಳಗಾವಿ. ಕರ್ನಾಟಕ, ಭಾರತ.<br>
+            © 2026 Designed & Developed by Project Management Cell (PMC), VTU, Belagavi. Karnataka. India.
+        </div>
+
+    </div>
+
+    <script>
+        function showResults(e) {
+            if (e) e.preventDefault();
+            const usn = document.getElementById('usnInput').value;
+            if (usn) {
+                document.getElementById('displayUsn').innerText = usn.toUpperCase();
+            }
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('resultView').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('loginView').style.display = 'block';
+            document.getElementById('resultView').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
